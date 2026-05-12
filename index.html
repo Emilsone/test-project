@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ride With Me — Elite Chauffeur & Event Logistics, Lagos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --ink:      #0D0D0B;
+  --ink-2:    #1C1C19;
+  --ink-3:    #2A2A26;
+  --gold:     #B8963E;
+  --gold-lt:  #D4AF5A;
+  --gold-dim: #7A6128;
+  --sand:     #F2EDE4;
+  --sand-2:   #E8E1D5;
+  --mist:     #9B9589;
+  --white:    #FDFCFA;
+  --serif:    'Playfair Display', Georgia, serif;
+  --sans:     'Outfit', sans-serif;
+  --ease:     cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+html { scroll-behavior: smooth; font-size: 16px; }
+body { background: var(--ink); color: var(--sand); font-family: var(--sans); font-weight: 300; line-height: 1.7; overflow-x: hidden; }
+
+/* ── CURSOR (desktop only) ── */
+@media (hover: hover) and (pointer: fine) {
+  body { cursor: none; }
+  .cursor { position:fixed; width:8px; height:8px; background:var(--gold); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:transform .15s var(--ease), width .3s, height .3s, background .3s; }
+  .cursor-ring { position:fixed; width:36px; height:36px; border:1px solid rgba(184,150,62,.4); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:transform .4s var(--ease); }
+  body:has(a:hover) .cursor, body:has(button:hover) .cursor { width:16px; height:16px; background:var(--gold-lt); }
+}
+
+/* ── MOBILE MENU ── */
+.mobile-menu-btn {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  z-index: 301;
+}
+.mobile-menu-btn span {
+  display: block;
+  width: 24px;
+  height: 1.5px;
+  background: var(--gold);
+  transition: all .3s var(--ease);
+}
+.mobile-menu-btn.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.mobile-menu-btn.open span:nth-child(2) { opacity: 0; }
+.mobile-menu-btn.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+/* ── NAV ── */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:200;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 60px; height:80px;
+  transition:background .4s, backdrop-filter .4s, border-color .4s;
+  border-bottom: 1px solid transparent;
+}
+nav.scrolled { background:rgba(13,13,11,.95); backdrop-filter:blur(16px); border-color:rgba(184,150,62,.12); }
+.nav-logo { display:flex; flex-direction:column; line-height:1; text-decoration:none; }
+.nav-logo-main { font-family:var(--serif); font-size:19px; font-weight:500; color:var(--gold); letter-spacing:.06em; }
+.nav-logo-sub { font-size:9px; letter-spacing:.25em; text-transform:uppercase; color:var(--mist); margin-top:3px; }
+.nav-links { display:flex; align-items:center; gap:40px; list-style:none; }
+.nav-links a { font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--mist); text-decoration:none; transition:color .2s; font-weight:400; }
+.nav-links a:hover { color:var(--sand); }
+.nav-book { background:var(--gold); color:var(--ink) !important; padding:11px 28px; font-weight:500 !important; letter-spacing:.1em !important; transition:background .2s, transform .15s !important; }
+.nav-book:hover { background:var(--gold-lt) !important; transform:translateY(-1px); }
+
+/* ── MOBILE NAV DRAWER ── */
+.nav-drawer {
+  position: fixed;
+  top: 0; right: -100%;
+  width: min(320px, 85vw);
+  height: 100vh;
+  background: var(--ink-2);
+  border-left: 1px solid rgba(184,150,62,.15);
+  z-index: 300;
+  transition: right .4s var(--ease);
+  display: flex;
+  flex-direction: column;
+  padding: 100px 40px 48px;
+  gap: 0;
+}
+.nav-drawer.open { right: 0; }
+.nav-drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.6);
+  z-index: 299;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s;
+}
+.nav-drawer-overlay.open { opacity: 1; pointer-events: all; }
+.nav-drawer ul { list-style: none; display: flex; flex-direction: column; gap: 0; }
+.nav-drawer ul li { border-bottom: 1px solid rgba(184,150,62,.08); }
+.nav-drawer ul a {
+  display: block;
+  padding: 18px 0;
+  font-size: 15px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--sand-2);
+  text-decoration: none;
+  transition: color .2s;
+  font-weight: 400;
+}
+.nav-drawer ul a:hover { color: var(--gold); }
+.nav-drawer-book {
+  margin-top: 32px;
+  background: var(--gold);
+  color: var(--ink);
+  padding: 16px 28px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  text-align: center;
+  display: block;
+  transition: background .2s;
+}
+.nav-drawer-book:hover { background: var(--gold-lt); }
+
+/* ── HERO ── */
+.hero {
+  position:relative; height:100vh; min-height:600px;
+  display:grid; grid-template-columns:1fr 1fr;
+  overflow:hidden;
+}
+.hero-left {
+  position:relative; z-index:2;
+  display:flex; flex-direction:column; justify-content:flex-end;
+  padding:0 60px 80px;
+  background: linear-gradient(105deg, var(--ink) 55%, transparent 100%);
+}
+.hero-bg {
+  position:absolute; inset:0; z-index:0;
+  background: url('https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=1800&q=85') center/cover no-repeat;
+}
+.hero-bg::after {
+  content:''; position:absolute; inset:0;
+  background: linear-gradient(to right, rgba(13,13,11,1) 30%, rgba(13,13,11,0.5) 65%, rgba(13,13,11,0.1) 100%);
+}
+.hero-tag {
+  display:inline-flex; align-items:center; gap:12px;
+  font-size:10px; letter-spacing:.25em; text-transform:uppercase; color:var(--gold);
+  margin-bottom:28px; opacity:0; animation:riseIn .8s .3s var(--ease) forwards;
+}
+.hero-tag::before { content:''; width:32px; height:1px; background:var(--gold); }
+.hero-h1 {
+  font-family:var(--serif); font-size:clamp(44px,6.5vw,92px); font-weight:400;
+  line-height:.97; letter-spacing:-.01em; color:var(--white);
+  margin-bottom:32px; opacity:0; animation:riseIn .9s .45s var(--ease) forwards;
+}
+.hero-h1 em { font-style:italic; color:var(--gold-lt); display:block; }
+.hero-body {
+  font-size:15px; color:var(--mist); max-width:400px; line-height:1.85;
+  margin-bottom:44px; opacity:0; animation:riseIn .9s .6s var(--ease) forwards;
+}
+.hero-ctas {
+  display:flex; align-items:center; gap:20px; flex-wrap: wrap;
+  opacity:0; animation:riseIn .9s .75s var(--ease) forwards;
+}
+.btn-gold {
+  background:var(--gold); color:var(--ink); border:none; cursor:pointer;
+  padding:15px 36px; font-family:var(--sans); font-size:12px; font-weight:600;
+  letter-spacing:.12em; text-transform:uppercase; text-decoration:none;
+  display:inline-block; transition:background .2s, transform .15s;
+}
+.btn-gold:hover { background:var(--gold-lt); transform:translateY(-2px); }
+.btn-outline {
+  border:1px solid rgba(184,150,62,.4); color:var(--sand-2);
+  padding:14px 30px; font-size:12px; font-weight:400;
+  letter-spacing:.1em; text-transform:uppercase; text-decoration:none;
+  display:inline-block; transition:border-color .2s, color .2s;
+}
+.btn-outline:hover { border-color:var(--gold); color:var(--gold); }
+.hero-scroll-indicator {
+  position:absolute; right:60px; bottom:40px; z-index:3;
+  display:flex; flex-direction:column; align-items:center; gap:8px;
+  opacity:0; animation:fadeIn .8s 1.2s forwards;
+}
+.hero-scroll-indicator span { font-size:9px; letter-spacing:.2em; text-transform:uppercase; color:var(--gold-dim); writing-mode:vertical-rl; }
+.hero-scroll-line { width:1px; height:50px; background:linear-gradient(to bottom, var(--gold-dim), transparent); animation:scrollPulse 2s 1.5s ease-in-out infinite; }
+
+/* ── QUICK BOOKING BAR ── */
+.booking-bar {
+  background:var(--ink-2); border-top:1px solid rgba(184,150,62,.15); border-bottom:1px solid rgba(184,150,62,.15);
+  padding:0 60px;
+}
+.booking-bar-inner {
+  display:grid; grid-template-columns:1fr 1fr 1fr 1fr auto;
+  gap:0; align-items:stretch;
+}
+.booking-field {
+  padding:22px 28px; border-right:1px solid rgba(184,150,62,.1);
+  display:flex; flex-direction:column; gap:5px;
+}
+.booking-field:last-of-type { border-right:none; }
+.booking-field label { font-size:9px; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); font-weight:400; }
+.booking-field select, .booking-field input {
+  background:transparent; border:none; outline:none; color:var(--sand);
+  font-family:var(--sans); font-size:14px; font-weight:300; cursor:pointer;
+  -webkit-appearance:none;
+  width: 100%;
+}
+.booking-field select option { background:var(--ink-2); color:var(--sand); }
+.booking-btn {
+  background:var(--gold); border:none; cursor:pointer;
+  padding:0 40px; font-family:var(--sans); font-size:11px; font-weight:600;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--ink);
+  transition:background .2s; white-space:nowrap;
+}
+.booking-btn:hover { background:var(--gold-lt); }
+
+/* ── SECTION PRIMITIVES ── */
+.sec { padding:110px 60px; }
+.sec-alt { background:var(--ink-2); }
+.sec-sand { background:var(--sand); color:var(--ink); }
+.tag-line {
+  display:flex; align-items:center; gap:12px;
+  font-size:9px; letter-spacing:.25em; text-transform:uppercase;
+  color:var(--gold); margin-bottom:18px;
+}
+.tag-line::before { content:''; width:28px; height:1px; background:var(--gold); }
+.sec-sand .tag-line { color:var(--gold-dim); }
+.sec-sand .tag-line::before { background:var(--gold-dim); }
+h2.display {
+  font-family:var(--serif); font-size:clamp(34px,4.5vw,62px);
+  font-weight:400; line-height:1.08; letter-spacing:-.01em; color:var(--white);
+  margin-bottom:20px;
+}
+h2.display em { font-style:italic; color:var(--gold-lt); }
+.sec-sand h2.display { color:var(--ink); }
+.sec-sand h2.display em { color:var(--gold-dim); }
+.intro-body { font-size:15px; color:var(--mist); max-width:500px; line-height:1.9; }
+.sec-sand .intro-body { color:#6B6456; }
+
+/* ── NUMBERS BAND ── */
+.numbers-band {
+  background:var(--ink-3); padding:50px 60px;
+  display:grid; grid-template-columns:repeat(5,1fr);
+  border-top:1px solid rgba(184,150,62,.1); border-bottom:1px solid rgba(184,150,62,.1);
+}
+.num-item { text-align:center; padding:10px 0; position:relative; }
+.num-item:not(:last-child)::after { content:''; position:absolute; right:0; top:20%; bottom:20%; width:1px; background:rgba(184,150,62,.12); }
+.num-val { font-family:var(--serif); font-size:clamp(28px,3.5vw,44px); font-weight:400; color:var(--gold); line-height:1; display:block; }
+.num-label { font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--mist); margin-top:8px; display:block; }
+.num-sub { font-size:11px; color:var(--gold-dim); margin-top:3px; display:block; }
+
+/* ── SERVICES ── */
+.services-layout { display:grid; grid-template-columns:300px 1fr; gap:80px; align-items:start; }
+.services-sticky { position:sticky; top:110px; }
+.services-tabs { display:flex; flex-direction:column; gap:0; margin-top:48px; }
+.svc-tab {
+  padding:18px 0; border-top:1px solid rgba(184,150,62,.12);
+  display:flex; align-items:center; justify-content:space-between;
+  cursor:pointer; transition:all .2s;
+}
+.svc-tab:last-child { border-bottom:1px solid rgba(184,150,62,.12); }
+.svc-tab-name { font-family:var(--serif); font-size:20px; font-weight:400; color:var(--mist); transition:color .2s; }
+.svc-tab.active .svc-tab-name { color:var(--white); }
+.svc-tab-arrow { color:var(--gold-dim); font-size:18px; opacity:0; transition:opacity .2s, transform .2s; }
+.svc-tab.active .svc-tab-arrow { opacity:1; transform:translateX(4px); }
+.svc-tab:hover .svc-tab-name { color:var(--sand-2); }
+.svc-tab:hover .svc-tab-arrow { opacity:.5; }
+
+.services-panels { position:relative; }
+.svc-panel { display:none; }
+.svc-panel.active { display:block; animation:panelIn .4s var(--ease); }
+.svc-panel-img { width:100%; aspect-ratio:16/9; object-fit:cover; margin-bottom:36px; filter:brightness(.9); }
+.svc-panel-num { font-size:11px; letter-spacing:.2em; color:var(--gold); margin-bottom:14px; font-weight:400; }
+.svc-panel-title { font-family:var(--serif); font-size:clamp(24px,3vw,36px); font-weight:400; color:var(--white); margin-bottom:18px; line-height:1.2; }
+.svc-panel-body { font-size:14px; color:var(--mist); line-height:1.95; margin-bottom:28px; max-width:560px; }
+.svc-bullets { list-style:none; display:grid; grid-template-columns:1fr 1fr; gap:10px 24px; margin-bottom:36px; }
+.svc-bullets li { font-size:13px; color:var(--sand-2); display:flex; align-items:center; gap:10px; }
+.svc-bullets li::before { content:''; width:5px; height:5px; background:var(--gold); border-radius:50%; flex-shrink:0; }
+
+/* ── WHY RWM ── */
+.why-grid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:rgba(184,150,62,.08); margin-top:64px; }
+.why-card {
+  background:var(--ink-2); padding:48px 40px;
+  transition:background .3s;
+  position:relative; overflow:hidden;
+}
+.why-card::before {
+  content:''; position:absolute; left:0; top:0; bottom:0; width:2px;
+  background:var(--gold); transform:scaleY(0); transform-origin:bottom;
+  transition:transform .35s var(--ease);
+}
+.why-card:hover { background:var(--ink-3); }
+.why-card:hover::before { transform:scaleY(1); }
+.why-icon { font-size:26px; margin-bottom:20px; display:block; }
+.why-title { font-family:var(--serif); font-size:22px; font-weight:400; color:var(--white); margin-bottom:12px; }
+.why-body { font-size:13px; color:var(--mist); line-height:1.9; }
+.why-proof { margin-top:14px; font-size:12px; color:var(--gold); font-style:italic; }
+
+/* ── FLEET ── */
+.fleet-intro { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:56px; gap:40px; }
+.fleet-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; }
+.fleet-card { position:relative; overflow:hidden; aspect-ratio:3/4; cursor:pointer; }
+.fleet-card img { width:100%; height:100%; object-fit:cover; filter:saturate(.85) brightness(.75); transition:transform .6s var(--ease), filter .4s; }
+.fleet-card:hover img { transform:scale(1.05); filter:saturate(.95) brightness(.85); }
+.fleet-over {
+  position:absolute; inset:0;
+  background:linear-gradient(to top, rgba(13,13,11,.95) 0%, rgba(13,13,11,.2) 50%, transparent 80%);
+  display:flex; flex-direction:column; justify-content:flex-end; padding:32px 28px;
+}
+.fleet-badge { font-size:9px; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); margin-bottom:8px; }
+.fleet-name { font-family:var(--serif); font-size:clamp(20px,2.5vw,26px); font-weight:400; color:var(--white); margin-bottom:6px; line-height:1.2; }
+.fleet-models { font-size:12px; color:var(--sand-2); opacity:.7; margin-bottom:14px; }
+.fleet-specs-row { display:flex; gap:14px; flex-wrap:wrap; }
+.fleet-spec { font-size:10px; color:var(--sand-2); opacity:.6; letter-spacing:.04em; display:flex; align-items:center; gap:5px; }
+.fleet-spec::before { content:''; width:3px; height:3px; background:var(--gold); border-radius:50%; }
+
+/* ── CLIENTS ── */
+.clients-sec { background:var(--sand); color:var(--ink); }
+.logo-row {
+  display:grid; grid-template-columns:repeat(5,1fr);
+  border-top:1px solid rgba(13,13,11,.1); margin-top:56px;
+}
+.logo-cell {
+  padding:36px 20px; text-align:center;
+  border-right:1px solid rgba(13,13,11,.1); border-bottom:1px solid rgba(13,13,11,.1);
+  font-family:var(--serif); font-size:17px; font-weight:400; color:#B0A898;
+  transition:color .2s, background .2s; cursor:pointer;
+}
+.logo-cell:nth-child(5n) { border-right:none; }
+.logo-cell:hover { color:var(--gold-dim); background:rgba(184,150,62,.05); }
+.events-row { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:64px; }
+.event-card {
+  position:relative; overflow:hidden; aspect-ratio:4/3;
+}
+.event-card img { width:100%; height:100%; object-fit:cover; filter:saturate(.7); transition:transform .5s var(--ease); }
+.event-card:hover img { transform:scale(1.04); }
+.event-over {
+  position:absolute; inset:0;
+  background:linear-gradient(to top, rgba(13,13,11,.88) 0%, transparent 55%);
+  display:flex; flex-direction:column; justify-content:flex-end; padding:24px;
+}
+.event-name { font-family:var(--serif); font-size:20px; font-weight:400; color:var(--white); }
+.event-detail { font-size:11px; letter-spacing:.1em; color:var(--gold-lt); margin-top:4px; }
+.event-p { font-family:var(--serif); font-size:12px; font-weight:100; color:var(--white); }
+
+/* ── TESTIMONIALS ── */
+.testimonials-sec { background:var(--ink-3); }
+.testi-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:56px; }
+.testi-card {
+  background:var(--ink-2); padding:36px 32px;
+  border:1px solid rgba(184,150,62,.1);
+  position:relative;
+}
+.testi-stars { color:var(--gold); font-size:12px; letter-spacing:3px; margin-bottom:20px; }
+.testi-quote { font-size:13px; color:var(--sand-2); line-height:2; font-style:italic; margin-bottom:28px; }
+.testi-divider { width:32px; height:1px; background:rgba(184,150,62,.3); margin-bottom:20px; }
+.testi-name { font-size:14px; font-weight:500; color:var(--white); }
+.testi-role { font-size:11px; color:var(--mist); margin-top:3px; letter-spacing:.05em; }
+
+/* ── HOW IT WORKS ── */
+.how-sec { background:var(--ink); overflow:hidden; }
+.how-steps { display:grid; grid-template-columns:repeat(4,1fr); gap:0; margin-top:72px; position:relative; }
+.how-steps::before {
+  content:''; position:absolute; top:36px; left:calc(12.5%); right:calc(12.5%);
+  height:1px; background:linear-gradient(to right, transparent, var(--gold-dim) 20%, var(--gold-dim) 80%, transparent);
+  opacity:.4;
+}
+.how-step { padding:0 28px; position:relative; }
+.how-step-circle {
+  width:72px; height:72px; border:1px solid var(--gold);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--serif); font-size:22px; font-weight:400; color:var(--gold);
+  background:var(--ink); position:relative; z-index:1; margin-bottom:32px;
+}
+.how-step-title { font-size:16px; font-weight:500; color:var(--white); margin-bottom:10px; }
+.how-step-body { font-size:13px; color:var(--mist); line-height:1.85; }
+.how-step-note { font-size:11px; color:var(--gold-dim); margin-top:10px; font-style:italic; }
+
+/* ── COVERAGE ── */
+.coverage-sec { background:var(--ink-2); }
+.coverage-inner { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; }
+.coverage-cities { display:grid; grid-template-columns:1fr 1fr; gap:0; margin-top:48px; }
+.city-item {
+  padding:20px 0; border-top:1px solid rgba(184,150,62,.1);
+  display:flex; align-items:center; gap:16px;
+}
+.city-dot { width:8px; height:8px; background:var(--gold); border-radius:50%; flex-shrink:0; }
+.city-name { font-size:14px; color:var(--sand-2); font-weight:400; }
+.city-note { font-size:11px; color:var(--mist); margin-top:2px; }
+.coverage-visual {
+  position:relative; aspect-ratio:1; background:var(--ink-3);
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden;
+}
+.coverage-map-text { font-family:var(--serif); font-size:22px; color:var(--gold-dim); text-align:center; line-height:1.6; }
+
+/* ── FAQ ── */
+.faq-sec { background:var(--ink); }
+.faq-inner { display:grid; grid-template-columns:380px 1fr; gap:80px; }
+.faq-list { margin-top:56px; }
+.faq-item { border-top:1px solid rgba(184,150,62,.12); }
+.faq-item:last-child { border-bottom:1px solid rgba(184,150,62,.12); }
+.faq-q {
+  width:100%; background:none; border:none; text-align:left; cursor:pointer;
+  padding:22px 0; display:flex; align-items:center; justify-content:space-between; gap:20px;
+  font-family:var(--sans); font-size:15px; font-weight:400; color:var(--sand); transition:color .2s;
+}
+.faq-q:hover { color:var(--white); }
+.faq-icon { color:var(--gold); font-size:20px; flex-shrink:0; transition:transform .3s; font-weight:300; }
+.faq-item.open .faq-icon { transform:rotate(45deg); }
+.faq-a { max-height:0; overflow:hidden; transition:max-height .4s var(--ease); }
+.faq-item.open .faq-a { max-height:300px; }
+.faq-a-inner { padding:0 0 22px; font-size:14px; color:var(--mist); line-height:1.9; }
+
+/* ── CTA FINAL ── */
+.cta-final {
+  position:relative; overflow:hidden;
+  background:var(--gold);
+  padding:100px 60px;
+  display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center;
+}
+.cta-final::before {
+  content:''; position:absolute; right:-80px; top:-80px;
+  width:400px; height:400px;
+  border:1px solid rgba(13,13,11,.12); border-radius:50%;
+}
+.cta-final::after {
+  content:''; position:absolute; right:40px; top:40px;
+  width:200px; height:200px;
+  border:1px solid rgba(13,13,11,.08); border-radius:50%;
+}
+.cta-final-title { font-family:var(--serif); font-size:clamp(28px,4vw,56px); font-weight:400; color:var(--ink); line-height:1.1; }
+.cta-final-title em { font-style:italic; }
+.cta-final-right { display:flex; flex-direction:column; gap:20px; position:relative; z-index:1; }
+.cta-final-contact { display:flex; flex-direction:column; gap:12px; }
+.contact-row { display:flex; align-items:center; gap:14px; }
+.contact-icon { width:40px; height:40px; background:rgba(13,13,11,.1); display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
+.contact-label { font-size:10px; letter-spacing:.15em; text-transform:uppercase; color:rgba(13,13,11,.5); }
+.contact-value { font-size:16px; font-weight:500; color:var(--ink); }
+.btn-dark { background:var(--ink); color:var(--gold); border:none; cursor:pointer; padding:16px 36px; font-family:var(--sans); font-size:12px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; text-decoration:none; display:inline-block; transition:background .2s; }
+.btn-dark:hover { background:var(--ink-2); }
+.cta-divider { width:40px; height:1px; background:rgba(13,13,11,.2); }
+
+/* ── FOOTER ── */
+footer { background:var(--ink-2); border-top:1px solid rgba(184,150,62,.1); padding:72px 60px 40px; }
+.footer-top { display:grid; grid-template-columns:2.2fr 1fr 1fr 1fr; gap:56px; margin-bottom:60px; }
+.footer-brand-name { font-family:var(--serif); font-size:26px; font-weight:400; color:var(--gold); margin-bottom:12px; }
+.footer-brand-tag { font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--mist); margin-bottom:20px; }
+.footer-desc { font-size:13px; color:var(--mist); line-height:1.85; max-width:280px; margin-bottom:28px; }
+.footer-socials { display:flex; gap:10px; }
+.social-btn { width:36px; height:36px; border:1px solid rgba(184,150,62,.2); display:flex; align-items:center; justify-content:center; font-size:12px; color:var(--mist); text-decoration:none; transition:border-color .2s, color .2s; }
+.social-btn:hover { border-color:var(--gold); color:var(--gold); }
+.footer-col h4 { font-size:10px; letter-spacing:.22em; text-transform:uppercase; color:var(--gold); margin-bottom:22px; font-weight:400; }
+.footer-col ul { list-style:none; display:flex; flex-direction:column; gap:13px; }
+.footer-col ul a { font-size:13px; color:var(--mist); text-decoration:none; transition:color .2s; font-weight:300; }
+.footer-col ul a:hover { color:var(--sand); }
+.footer-contact-line { font-size:13px; color:var(--mist); margin-bottom:10px; line-height:1.7; }
+.footer-contact-line strong { color:var(--sand-2); font-weight:400; }
+.footer-bottom { padding-top:32px; border-top:1px solid rgba(184,150,62,.08); display:flex; align-items:center; justify-content:space-between; flex-wrap: wrap; gap: 12px; }
+.footer-copy { font-size:12px; color:var(--gold-dim); }
+.footer-legal { display:flex; gap:24px; flex-wrap: wrap; }
+.footer-legal a { font-size:12px; color:var(--gold-dim); text-decoration:none; transition:color .2s; }
+.footer-legal a:hover { color:var(--mist); }
+
+/* ── ANIMATIONS ── */
+@keyframes riseIn { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+@keyframes fadeIn  { from { opacity:0; } to { opacity:1; } }
+@keyframes panelIn { from { opacity:0; transform:translateX(16px); } to { opacity:1; transform:translateX(0); } }
+@keyframes scrollPulse { 0%,100%{opacity:0;transform:scaleY(.3);transform-origin:top} 50%{opacity:1;transform:scaleY(1)} }
+.reveal { opacity:0; transform:translateY(28px); transition:opacity .7s var(--ease), transform .7s var(--ease); }
+.reveal.shown { opacity:1; transform:translateY(0); }
+.reveal-delay-1 { transition-delay:.1s; }
+.reveal-delay-2 { transition-delay:.2s; }
+.reveal-delay-3 { transition-delay:.3s; }
+
+/* ══════════════════════════════════════════
+   RESPONSIVE BREAKPOINTS
+══════════════════════════════════════════ */
+
+/* ── TABLET: 1024px ── */
+@media (max-width: 1024px) {
+  nav { padding: 0 32px; }
+  .nav-links { gap: 24px; }
+  .sec { padding: 80px 32px; }
+  .booking-bar { padding: 0 32px; }
+  .numbers-band { padding: 40px 32px; }
+  .services-layout { grid-template-columns: 240px 1fr; gap: 48px; }
+  .svc-tab-name { font-size: 17px; }
+  .fleet-grid { grid-template-columns: repeat(3,1fr); }
+  .logo-row { grid-template-columns: repeat(5,1fr); }
+  .footer-top { grid-template-columns: 1.5fr 1fr 1fr; gap: 40px; }
+  .footer-top > div:first-child { grid-column: 1 / -1; }
+  .footer-top > div:first-child .footer-desc { max-width: 100%; }
+  .coverage-inner { gap: 48px; }
+  .faq-inner { grid-template-columns: 280px 1fr; gap: 56px; }
+  .cta-final { padding: 80px 32px; }
+  footer { padding: 64px 32px 36px; }
+}
+
+/* ── TABLET PORTRAIT / LARGE MOBILE: 768px ── */
+@media (max-width: 768px) {
+  nav { padding: 0 24px; height: 68px; }
+  .nav-links { display: none; }
+  .mobile-menu-btn { display: flex; }
+
+  /* Hero: single column, full width overlay */
+  .hero { grid-template-columns: 1fr; }
+  .hero-left { padding: 0 24px 60px; grid-column: 1; }
+  .hero-bg::after {
+    background: linear-gradient(to bottom, rgba(13,13,11,.3) 0%, rgba(13,13,11,.9) 60%, rgba(13,13,11,1) 100%);
+  }
+  .hero-scroll-indicator { right: 24px; bottom: 24px; }
+  .hero-h1 { font-size: clamp(40px, 9vw, 60px); }
+  .hero-body { font-size: 14px; }
+  .hero-ctas { gap: 12px; }
+  .btn-gold, .btn-outline { padding: 13px 24px; font-size: 11px; }
+
+  /* Booking bar: stacked */
+  .booking-bar { padding: 0; }
+  .booking-bar-inner {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
+  }
+  .booking-field { padding: 18px 20px; }
+  .booking-field:nth-child(2) { border-right: none; }
+  .booking-field:nth-child(3) { border-right: 1px solid rgba(184,150,62,.1); }
+  .booking-btn {
+    grid-column: 1 / -1;
+    padding: 18px 20px;
+    font-size: 12px;
+  }
+
+  /* Numbers: 2x3 grid */
+  .numbers-band {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    padding: 32px 24px;
+    gap: 0;
+  }
+  .num-item:nth-child(3n)::after { display: none; }
+  .num-item { padding: 16px 0; }
+  .num-item:nth-child(n+4) { border-top: 1px solid rgba(184,150,62,.08); }
+
+  /* Services: stacked */
+  .sec { padding: 64px 24px; }
+  .services-layout { grid-template-columns: 1fr; gap: 0; }
+  .services-sticky { position: static; }
+  .services-tabs { margin-top: 32px; margin-bottom: 40px; }
+  .svc-tab-name { font-size: 18px; }
+  .svc-bullets { grid-template-columns: 1fr; }
+
+  /* Why grid: 1 col */
+  .why-grid { grid-template-columns: 1fr; }
+  .why-card { padding: 36px 28px; }
+
+  /* Fleet: 1 col */
+  .fleet-intro { flex-direction: column; align-items: flex-start; gap: 20px; }
+  .fleet-grid { grid-template-columns: 1fr; }
+  .fleet-card { aspect-ratio: 4/3; }
+
+  /* Clients logos: 2x5 */
+  .logo-row { grid-template-columns: repeat(2, 1fr); }
+  .logo-cell:nth-child(5n) { border-right: 1px solid rgba(13,13,11,.1); }
+  .logo-cell:nth-child(2n) { border-right: none; }
+  .logo-cell { padding: 24px 16px; font-size: 15px; }
+
+  /* Events: 1 col */
+  .events-row { grid-template-columns: 1fr; }
+
+  /* Testimonials: 1 col */
+  .testi-grid { grid-template-columns: 1fr; }
+
+  /* How steps: 2 col */
+  .how-steps { grid-template-columns: 1fr 1fr; gap: 40px 0; }
+  .how-steps::before { display: none; }
+  .how-step { padding: 0 20px; }
+
+  /* Coverage: stacked */
+  .coverage-inner { grid-template-columns: 1fr; gap: 48px; }
+  .coverage-visual { aspect-ratio: 16/9; }
+  .coverage-cities { grid-template-columns: 1fr 1fr; }
+
+  /* FAQ: stacked */
+  .faq-inner { grid-template-columns: 1fr; gap: 0; }
+  .faq-list { margin-top: 32px; }
+  .faq-q { font-size: 14px; }
+
+  /* CTA: stacked */
+  .cta-final { grid-template-columns: 1fr; padding: 64px 24px; gap: 40px; }
+  .cta-final::before, .cta-final::after { display: none; }
+
+  /* Footer: stacked */
+  footer { padding: 56px 24px 32px; }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 36px; }
+  .footer-top > div:first-child { grid-column: 1 / -1; }
+
+  /* Contact values smaller */
+  .contact-value { font-size: 14px; }
+}
+
+/* ── MOBILE: 480px ── */
+@media (max-width: 480px) {
+  nav { padding: 0 16px; }
+  .sec { padding: 52px 16px; }
+
+  .hero-left { padding: 0 16px 52px; }
+  .hero-h1 { font-size: clamp(36px, 10vw, 52px); }
+  .hero-ctas { flex-direction: column; align-items: flex-start; }
+  .btn-gold, .btn-outline { width: 100%; text-align: center; }
+  .hero-scroll-indicator { display: none; }
+
+  /* Numbers: 2 col */
+  .numbers-band { grid-template-columns: 1fr 1fr; padding: 24px 16px; }
+  .num-item::after { display: none; }
+  .num-item:nth-child(odd) { border-right: 1px solid rgba(184,150,62,.1); }
+  .num-item:nth-child(n+3) { border-top: 1px solid rgba(184,150,62,.08); }
+
+  /* Booking bar: single col */
+  .booking-bar-inner { grid-template-columns: 1fr; }
+  .booking-field { border-right: none !important; border-bottom: 1px solid rgba(184,150,62,.1); }
+  .booking-field:last-of-type { border-bottom: none; }
+
+  /* Services */
+  .svc-tab-name { font-size: 16px; }
+  .svc-panel-title { font-size: 22px; }
+
+  /* How steps: 1 col */
+  .how-steps { grid-template-columns: 1fr; }
+  .how-step { padding: 0; }
+  .how-step-circle { width: 56px; height: 56px; font-size: 18px; }
+
+  /* Coverage */
+  .coverage-cities { grid-template-columns: 1fr; }
+
+  /* CTA */
+  .cta-final { padding: 52px 16px; }
+  .btn-dark { width: 100%; text-align: center; }
+
+  /* Footer: single col */
+  footer { padding: 48px 16px 28px; }
+  .footer-top { grid-template-columns: 1fr; gap: 32px; }
+  .footer-top > div:first-child { grid-column: 1; }
+  .footer-bottom { flex-direction: column; align-items: flex-start; }
+  .footer-legal { gap: 16px; }
+
+  /* Logo row */
+  .logo-row { grid-template-columns: 1fr 1fr; }
+
+  /* Why: tighten */
+  .why-card { padding: 28px 20px; }
+  .why-title { font-size: 18px; }
+
+  /* Testi */
+  .testi-card { padding: 28px 20px; }
+
+  /* FAQ */
+  .faq-q { font-size: 13px; }
+
+  /* Fleet */
+  .fleet-over { padding: 20px 16px; }
+  .fleet-name { font-size: 20px; }
+
+  /* Nav drawer */
+  .nav-drawer { padding: 88px 28px 40px; }
+}
+
+/* ── VERY SMALL: 360px ── */
+@media (max-width: 360px) {
+  .hero-h1 { font-size: 34px; }
+  .numbers-band { grid-template-columns: 1fr; }
+  .num-item:nth-child(odd) { border-right: none; }
+  .logo-row { grid-template-columns: 1fr; }
+  .logo-cell { border-right: none !important; }
+}
+
+/* ── LANDSCAPE MOBILE HELPER ── */
+@media (max-width: 768px) and (orientation: landscape) {
+  .hero { min-height: 100vw; }
+  .hero-h1 { font-size: clamp(32px, 6vw, 52px); }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ── NAV DRAWER (mobile) ── -->
+<div class="nav-drawer-overlay" id="drawerOverlay"></div>
+<div class="nav-drawer" id="navDrawer">
+  <ul>
+    <li><a href="#services" class="drawer-link">Services</a></li>
+    <li><a href="#fleet" class="drawer-link">Fleet</a></li>
+    <li><a href="#clients" class="drawer-link">Clients</a></li>
+    <li><a href="#coverage" class="drawer-link">Coverage</a></li>
+    <li><a href="#faq" class="drawer-link">FAQ</a></li>
+  </ul>
+  <a href="#contact" class="nav-drawer-book drawer-link">Request a Quote</a>
+</div>
+
+<!-- ════ NAV ════ -->
+<nav id="mainNav">
+  <a href="#" class="nav-logo">
+    <span class="nav-logo-main">Ride With Me</span>
+    <span class="nav-logo-sub">Lagos · Est. 2019</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#fleet">Fleet</a></li>
+    <li><a href="#clients">Clients</a></li>
+    <li><a href="#coverage">Coverage</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#contact" class="nav-book">Request a Quote</a></li>
+  </ul>
+  <button class="mobile-menu-btn" id="menuBtn" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ════ HERO ════ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-left">
+    <div class="hero-tag">Lagos' Premier Ground Transport</div>
+    <h1 class="hero-h1">
+      Move without<br>
+      <em>incident.</em>
+    </h1>
+    <p class="hero-body">
+      RWM handles ground transport and event logistics across Nigeria, from airport transfers to multi-city concert tours, with one contact managing everything.
+    </p>
+    <div class="hero-ctas">
+      <a href="#contact" class="btn-gold">Book a Transfer</a>
+      <a href="#services" class="btn-outline">Explore Services</a>
+    </div>
+  </div>
+  <div class="hero-scroll-indicator">
+    <span>Scroll</span>
+    <div class="hero-scroll-line"></div>
+  </div>
+</section>
+
+<!-- ════ QUICK BOOKING BAR ════ -->
+<div class="booking-bar reveal">
+  <div class="booking-bar-inner">
+    <div class="booking-field">
+      <label>Service Type</label>
+      <select>
+        <option>Airport Transfer</option>
+        <option>Event Logistics</option>
+        <option>Corporate Chauffeur</option>
+        <option>VIP Movement</option>
+        <option>Wedding Transport</option>
+        <option>Convoy / Fleet</option>
+      </select>
+    </div>
+    <div class="booking-field">
+      <label>Pickup Location</label>
+      <input type="text" placeholder="Enter address or airport">
+    </div>
+    <div class="booking-field">
+      <label>Date & Time</label>
+      <input type="text" placeholder="DD / MM / YYYY — HH:MM">
+    </div>
+    <div class="booking-field">
+      <label>No. of Passengers</label>
+      <select>
+        <option>1–3 passengers</option>
+        <option>4–7 passengers</option>
+        <option>8–15 passengers</option>
+        <option>16+ passengers</option>
+      </select>
+    </div>
+    <button class="booking-btn">Get Quote →</button>
+  </div>
+</div>
+
+<!-- ════ NUMBERS BAND ════ -->
+<div class="numbers-band reveal">
+  <div class="num-item">
+    <span class="num-val">200+</span>
+    <span class="num-label">Events Managed</span>
+    <span class="num-sub">Since 2019</span>
+  </div>
+  <div class="num-item">
+    <span class="num-val">1,500+</span>
+    <span class="num-label">VIP Transfers</span>
+    <span class="num-sub">Zero missed pickups</span>
+  </div>
+  <div class="num-item">
+    <span class="num-val">40+</span>
+    <span class="num-label">Brand Partners</span>
+    <span class="num-sub">Tier-1 corporations</span>
+  </div>
+  <div class="num-item">
+    <span class="num-val">12</span>
+    <span class="num-label">Cities Covered</span>
+    <span class="num-sub">Across Nigeria</span>
+  </div>
+  <div class="num-item">
+    <span class="num-val">&lt;2 hrs</span>
+    <span class="num-label">Quote Response</span>
+    <span class="num-sub">Guaranteed</span>
+  </div>
+</div>
+
+<!-- ════ SERVICES ════ -->
+<section class="sec sec-alt" id="services">
+  <div class="reveal">
+    <div class="tag-line">What We Do</div>
+    <h2 class="display">Built for every<br><em>occasion</em></h2>
+  </div>
+  <div class="services-layout" style="margin-top:64px;">
+    <div class="services-sticky">
+      <p class="intro-body">From intimate executive pickups to full multi-day festival convoys — we handle every movement with the same standard of precision and care.</p>
+      <div class="services-tabs" id="servicesTabs">
+        <div class="svc-tab active" data-panel="p1">
+          <span class="svc-tab-name">Airport Transfers</span>
+          <span class="svc-tab-arrow">→</span>
+        </div>
+        <div class="svc-tab" data-panel="p2">
+          <span class="svc-tab-name">Event Logistics</span>
+          <span class="svc-tab-arrow">→</span>
+        </div>
+        <div class="svc-tab" data-panel="p3">
+          <span class="svc-tab-name">Corporate Chauffeur</span>
+          <span class="svc-tab-arrow">→</span>
+        </div>
+        <div class="svc-tab" data-panel="p4">
+          <span class="svc-tab-name">VIP Movement</span>
+          <span class="svc-tab-arrow">→</span>
+        </div>
+        <div class="svc-tab" data-panel="p5">
+          <span class="svc-tab-name">Wedding Transport</span>
+          <span class="svc-tab-arrow">→</span>
+        </div>
+        <div class="svc-tab" data-panel="p6">
+          <span class="svc-tab-name">Convoy Management</span>
+          <span class="svc-tab-arrow">→</span>
+        </div>
+      </div>
+    </div>
+    <div class="services-panels" id="servicesPanels">
+      <div class="svc-panel active" id="p1">
+        <img class="svc-panel-img" src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=900&q=80" alt="Airport transfer">
+        <div class="svc-panel-num">Service 01</div>
+        <h3 class="svc-panel-title">Airport Transfers & Protocol</h3>
+        <p class="svc-panel-body">Meet-and-greet at arrivals, immigration assistance, luggage handling, and seamless onward transfer in a clean, chilled vehicle — available at Lagos, Abuja, Port Harcourt, and Kano airports around the clock.</p>
+        <ul class="svc-bullets">
+          <li>24/7 availability, all airports</li>
+          <li>Flight tracking & delay monitoring</li>
+          <li>Name-board meet & greet</li>
+          <li>Up to 60 min free waiting time</li>
+          <li>Immigration & protocol assistance</li>
+          <li>Luggage handling included</li>
+        </ul>
+        <a href="#contact" class="btn-gold">Book This Service</a>
+      </div>
+      <div class="svc-panel" id="p2">
+        <img class="svc-panel-img" src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=900&q=80" alt="Event logistics">
+        <div class="svc-panel-num">Service 02</div>
+        <h3 class="svc-panel-title">Event & Concert Logistics</h3>
+        <p class="svc-panel-body">Full ground transport management for concerts, brand activations, product launches, and press events. We've coordinated movement for Hennessy Artistry, Davido's wedding, and Chocolate City showcases — all without a single incident.</p>
+        <ul class="svc-bullets">
+          <li>Pre-event route reconnaissance</li>
+          <li>Multi-vehicle coordination</li>
+          <li>Dedicated operations commander</li>
+          <li>Real-time radio/comms network</li>
+          <li>Artist & talent handling</li>
+          <li>Post-event debrief report</li>
+        </ul>
+        <a href="#contact" class="btn-gold">Book This Service</a>
+      </div>
+      <div class="svc-panel" id="p3">
+        <img class="svc-panel-img" src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=900&q=80" alt="Corporate chauffeur">
+        <div class="svc-panel-num">Service 03</div>
+        <h3 class="svc-panel-title">Corporate Chauffeur</h3>
+        <p class="svc-panel-body">Dedicated, uniformed drivers for executives, client visits, board meetings, and roadshows. Monthly retainer packages available for businesses requiring consistent, reliable transport for their senior team.</p>
+        <ul class="svc-bullets">
+          <li>Vetted, NDA-bound drivers</li>
+          <li>Monthly retainer packages</li>
+          <li>In-car Wi-Fi & privacy screen</li>
+          <li>Corporate invoicing available</li>
+          <li>Multi-city scheduling</li>
+          <li>Dedicated account manager</li>
+        </ul>
+        <a href="#contact" class="btn-gold">Book This Service</a>
+      </div>
+      <div class="svc-panel" id="p4">
+        <img class="svc-panel-img" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=80" alt="VIP movement">
+        <div class="svc-panel-num">Service 04</div>
+        <h3 class="svc-panel-title">VIP & Celebrity Movement</h3>
+        <p class="svc-panel-body">Security-conscious routing, advance team coordination, and discreet professional conduct for high-profile individuals. Our drivers are briefed on confidentiality protocols and trained in secure transit best practices.</p>
+        <ul class="svc-bullets">
+          <li>Advance route planning</li>
+          <li>Security liaison capability</li>
+          <li>Strict confidentiality protocols</li>
+          <li>Armoured vehicles available</li>
+          <li>Multiple decoy vehicle option</li>
+          <li>Tinted, unmarked vehicles</li>
+        </ul>
+        <a href="#contact" class="btn-gold">Book This Service</a>
+      </div>
+      <div class="svc-panel" id="p5">
+        <img class="svc-panel-img" src="https://images.unsplash.com/photo-1519741497674-611481863552?w=900&q=80" alt="Wedding transport">
+        <div class="svc-panel-num">Service 05</div>
+        <h3 class="svc-panel-title">Wedding Transport</h3>
+        <p class="svc-panel-body">Coordinated bridal convoys, guest shuttles, and perfectly timed ceremonial arrivals. Our team works directly with your wedding planner from the planning stage — never a surprise on the day.</p>
+        <ul class="svc-bullets">
+          <li>Bridal convoy coordination</li>
+          <li>Guest shuttle management</li>
+          <li>Decorated vehicle option</li>
+          <li>Planner integration & briefings</li>
+          <li>Timed arrival scheduling</li>
+          <li>Backup vehicle on standby</li>
+        </ul>
+        <a href="#contact" class="btn-gold">Book This Service</a>
+      </div>
+      <div class="svc-panel" id="p6">
+        <img class="svc-panel-img" src="https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=900&q=80" alt="Convoy management">
+        <div class="svc-panel-num">Service 06</div>
+        <h3 class="svc-panel-title">Convoy & Fleet Management</h3>
+        <p class="svc-panel-body">Multi-vehicle coordination for large delegations, government visits, music tours, and press junkets. We have deployed up to 22 vehicles simultaneously across a single event — all tracked, all timed, all accounted for.</p>
+        <ul class="svc-bullets">
+          <li>Up to 25 vehicles per convoy</li>
+          <li>GPS fleet tracking dashboard</li>
+          <li>Centralized dispatch command</li>
+          <li>Fuel & logistics management</li>
+          <li>Driver rotation planning</li>
+          <li>Incident response protocol</li>
+        </ul>
+        <a href="#contact" class="btn-gold">Book This Service</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ WHY RWM ════ -->
+<section class="sec" id="why">
+  <div class="reveal">
+    <div class="tag-line">Why Ride With Me</div>
+    <h2 class="display">The difference is<br><em>in the details</em></h2>
+  </div>
+  <div class="why-grid reveal" style="margin-top:64px">
+    <div class="why-card">
+      <span class="why-icon">⏱</span>
+      <div class="why-title">Quote in Under 2 Hours</div>
+      <p class="why-body">Every enquiry receives a confirmed quote — vehicle class, driver assignment, and all-in pricing — within 2 hours. Not a holding message. A real, actionable quote.</p>
+      <p class="why-proof">Avg. response: 47 minutes</p>
+    </div>
+    <div class="why-card">
+      <span class="why-icon">🛡</span>
+      <div class="why-title">Vetted, Uniformed Drivers</div>
+      <p class="why-body">Every RWM driver passes a background check, completes our internal protocol and discretion training, and is held to a strict code of conduct enforced on every single booking.</p>
+      <p class="why-proof">100% background-checked team</p>
+    </div>
+    <div class="why-card">
+      <span class="why-icon">📍</span>
+      <div class="why-title">One Contact, Full Control</div>
+      <p class="why-body">You get a single, dedicated operations contact for the entire duration of your event — from planning to post-event. No hand-offs, no confusion, no missed calls.</p>
+      <p class="why-proof">Dedicated contact on every booking</p>
+    </div>
+    <div class="why-card">
+      <span class="why-icon">📊</span>
+      <div class="why-title">Proven at Scale</div>
+      <p class="why-body">We've managed simultaneous convoys of 22 vehicles across multi-day festivals and coordinated ground transport for international talent alongside local security teams.</p>
+      <p class="why-proof">22-vehicle convoys delivered</p>
+    </div>
+    <div class="why-card">
+      <span class="why-icon">🔕</span>
+      <div class="why-title">Total Discretion</div>
+      <p class="why-body">All drivers sign NDAs. Vehicle plates are unbranded by request. We work with security teams to keep movements private. Our clients' privacy is non-negotiable.</p>
+      <p class="why-proof">NDA-bound on every VIP job</p>
+    </div>
+    <div class="why-card">
+      <span class="why-icon">📋</span>
+      <div class="why-title">Transparent, Fixed Pricing</div>
+      <p class="why-body">The price quoted is the price you pay. No surge fees, no hidden add-ons after the fact. Corporate clients receive itemised invoices for accurate expense reporting.</p>
+      <p class="why-proof">Fixed-rate, all-inclusive quotes</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════ FLEET ════ -->
+<section class="sec sec-alt" id="fleet">
+  <div class="fleet-intro reveal">
+    <div>
+      <div class="tag-line">Our Fleet</div>
+      <h2 class="display">Vehicles worthy<br><em>of the occasion</em></h2>
+    </div>
+    <p class="intro-body" style="margin-bottom:0">All vehicles are less than 4 years old, maintained to a daily standard, and available with uniformed or plain-clothes drivers.</p>
+  </div>
+  <div class="fleet-grid reveal">
+    <div class="fleet-card">
+      <img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&q=80" alt="Executive Sedan">
+      <div class="fleet-over">
+        <div class="fleet-badge">Executive Class</div>
+        <div class="fleet-name">Executive<br>Sedans</div>
+        <div class="fleet-models">Mercedes E-Class · BMW 5 Series · Toyota Camry XSE</div>
+        <div class="fleet-specs-row">
+          <span class="fleet-spec">Up to 3 pax</span>
+          <span class="fleet-spec">In-car Wi-Fi</span>
+          <span class="fleet-spec">Privacy screen</span>
+        </div>
+      </div>
+    </div>
+    <div class="fleet-card">
+      <img src="https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=800&q=80" alt="Luxury SUV">
+      <div class="fleet-over">
+        <div class="fleet-badge">First Class</div>
+        <div class="fleet-name">Luxury<br>SUVs</div>
+        <div class="fleet-models">Toyota Land Cruiser · Lexus LX · Mercedes GLS</div>
+        <div class="fleet-specs-row">
+          <span class="fleet-spec">Up to 7 pax</span>
+          <span class="fleet-spec">All-terrain</span>
+          <span class="fleet-spec">Armoured option</span>
+        </div>
+      </div>
+    </div>
+    <div class="fleet-card">
+      <img src="https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=800&q=80" alt="Executive Coach">
+      <div class="fleet-over">
+        <div class="fleet-badge">Group Class</div>
+        <div class="fleet-name">Executive<br>Coaches</div>
+        <div class="fleet-models">Mercedes Sprinter · Toyota HiAce Executive · Coaster</div>
+        <div class="fleet-specs-row">
+          <span class="fleet-spec">12–25 pax</span>
+          <span class="fleet-spec">Reclining seats</span>
+          <span class="fleet-spec">USB charging</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ CLIENTS ════ -->
+<section class="sec clients-sec" id="clients">
+  <div class="reveal">
+    <div class="tag-line">Trusted By</div>
+    <h2 class="display">Brands that demand<br><em>perfection</em></h2>
+    <p class="intro-body" style="margin-top:16px">A selection of the corporations, record labels, and agencies that trust RWM for their most critical ground transport needs.</p>
+  </div>
+  <div class="logo-row reveal">
+    <div class="logo-cell">Hennessy</div>
+    <div class="logo-cell">Chocolate City</div>
+    <div class="logo-cell">Jameson</div>
+    <div class="logo-cell">Remy Martin</div>
+    <div class="logo-cell">MTV Base</div>
+    <div class="logo-cell">Guinness</div>
+    <div class="logo-cell">Flutterwave</div>
+    <div class="logo-cell">Paystack</div>
+    <div class="logo-cell">Access Bank</div>
+    <div class="logo-cell">GTBank</div>
+  </div>
+
+  <div style="margin-top:80px" class="reveal">
+    <div class="tag-line">Notable Events</div>
+    <h2 class="display" style="margin-bottom:0">On the ground at<br><em>Nigeria's biggest moments</em></h2>
+  </div>
+  <div class="events-row reveal" style="margin-top:40px">
+    <div class="event-card">
+      <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=700&q=80" alt="Hennessy Artistry">
+      <div class="event-over">
+        <div class="event-name">Hennessy Artistry</div>
+        <div class="event-detail">Lagos · Abuja · 12 Vehicles · 2023</div>
+      </div>
+    </div>
+    <div class="event-card">
+      <img src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=700&q=80" alt="Davido Wedding">
+      <div class="event-over">
+        <div class="event-name">OBO Wedding Convoy</div>
+        <p class="event-p">A nationwide brand activation across multiple cities. We coordinated all ground transport — keeping talent, crew, and brand teams moving on schedule throughout the series.</p>
+        <div class="event-detail">Lagos · 22 Vehicles · 2023</div>
+      </div>
+    </div>
+    <div class="event-card">
+      <img src="https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=700&q=80" alt="Chocolate City Showcase">
+      <div class="event-over">
+        <div class="event-name">Chocolate City Showcase</div>
+        <div class="event-detail">Lagos · Talent Transport · 2024</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ TESTIMONIALS ════ -->
+<section class="sec testimonials-sec" id="testimonials">
+  <div class="reveal">
+    <div class="tag-line">Client Feedback</div>
+    <h2 class="display">Heard directly<br><em>from those we serve</em></h2>
+  </div>
+  <div class="testi-grid reveal">
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-quote">"RWM managed all ground movement for our Hennessy Artistry activation across three cities. Every artist pickup was on time, no incidents, no complaints. That is exceptional by any standard in Lagos."</p>
+      <div class="testi-divider"></div>
+      <div class="testi-name">Adaeze Okafor</div>
+      <div class="testi-role">Events Manager — Hennessy Nigeria</div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-quote">"We've worked with five transport vendors in Lagos. RWM is the only one we've renewed with two years running. The difference is professionalism — their drivers don't need to be chased."</p>
+      <div class="testi-divider"></div>
+      <div class="testi-name">Kemi Adeyemi</div>
+      <div class="testi-role">Head of Talent — Chocolate City</div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-quote">"For the wedding convoy we needed absolute precision — 22 vehicles, back-to-back pickups, full-day coordination. RWM delivered without a single hiccup. We've used them for every major event since."</p>
+      <div class="testi-divider"></div>
+      <div class="testi-name">Biodun Fashola</div>
+      <div class="testi-role">Senior Event Planner — Freeme Digital</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ HOW IT WORKS ════ -->
+<section class="sec how-sec" id="how">
+  <div class="reveal" style="text-align:center">
+    <div class="tag-line" style="justify-content:center">
+      <span style="display:block;width:28px;height:1px;background:var(--gold)"></span>
+      Process
+    </div>
+    <h2 class="display">From enquiry<br><em>to arrival</em></h2>
+    <p class="intro-body" style="margin:16px auto 0; text-align:center">Simple, fast, and transparent at every step.</p>
+  </div>
+  <div class="how-steps reveal">
+    <div class="how-step">
+      <div class="how-step-circle">01</div>
+      <div class="how-step-title">Send your brief</div>
+      <p class="how-step-body">Fill the quick-quote form above or WhatsApp us. Include your dates, pickup points, vehicle count, and any special requirements.</p>
+      <p class="how-step-note">Takes under 3 minutes</p>
+    </div>
+    <div class="how-step">
+      <div class="how-step-circle">02</div>
+      <div class="how-step-title">Receive your quote</div>
+      <p class="how-step-body">We respond with a full itemised quote — vehicle class, driver names, all-inclusive pricing, and terms — within 2 hours.</p>
+      <p class="how-step-note">Guaranteed under 2 hours</p>
+    </div>
+    <div class="how-step">
+      <div class="how-step-circle">03</div>
+      <div class="how-step-title">Confirm & prepare</div>
+      <p class="how-step-body">Confirm with a deposit. Your dedicated operations contact briefs the team, conducts route reconnaissance, and shares the run-of-day schedule.</p>
+      <p class="how-step-note">Full ops brief included</p>
+    </div>
+    <div class="how-step">
+      <div class="how-step-circle">04</div>
+      <div class="how-step-title">Relax — we drive</div>
+      <p class="how-step-body">On the day, your contact is reachable throughout. GPS tracking, real-time comms, and a backup vehicle on standby. You focus on your event.</p>
+      <p class="how-step-note">Live contact on the day</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════ COVERAGE ════ -->
+<section class="sec coverage-sec" id="coverage">
+  <div class="coverage-inner">
+    <div class="reveal">
+      <div class="tag-line">Service Area</div>
+      <h2 class="display">Wherever the<br><em>moment takes you</em></h2>
+      <p class="intro-body" style="margin-top:16px">Based in Lagos, operating across 12 Nigerian cities — with the ability to scale to any location for major events with sufficient lead time.</p>
+      <div class="coverage-cities">
+        <div>
+          <div class="city-item"><div class="city-dot"></div><div><div class="city-name">Lagos</div><div class="city-note">Primary base</div></div></div>
+          <div class="city-item"><div class="city-dot"></div><div><div class="city-name">Abuja</div><div class="city-note">Permanent presence</div></div></div>
+          <div class="city-item"><div class="city-dot"></div><div><div class="city-name">Port Harcourt</div><div class="city-note">On-demand</div></div></div>
+          <div class="city-item"><div class="city-dot"></div><div><div class="city-name">Ibadan</div><div class="city-note">On-demand</div></div></div>
+          <div class="city-item"><div class="city-dot"></div><div><div class="city-name">Kano</div><div class="city-note">On-demand</div></div></div>
+          <div class="city-item"><div class="city-dot"></div><div><div class="city-name">Enugu</div><div class="city-note">On-demand</div></div></div>
+        </div>
+        <div>
+          <div class="city-item"><div class="city-dot"></div><div><div class="city-name">Benin City</div><div class="city-note">On-demand</div></div></div>
+          <div class="city-item"><div class="city-dot"></div><div><div class="city-name">Warri</div><div class="city-note">On-demand</div></div></div>
+          <div class="city-item"><div class="city-dot"></div><div><div class="city-name">Kaduna</div><div class="city-note">On-demand</div></div></div>
+          <div class="city-item"><div class="city-dot"></div><div><div class="city-name">Calabar</div><div class="city-note">On-demand</div></div></div>
+          <div class="city-item"><div class="city-dot"></div><div><div class="city-name">Owerri</div><div class="city-note">On-demand</div></div></div>
+          <div class="city-item"><div class="city-dot"></div><div><div class="city-name">Uyo</div><div class="city-note">On-demand</div></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal reveal-delay-2">
+      <div class="coverage-visual">
+        <div style="text-align:center; padding:40px;">
+          <div class="coverage-map-text">12 Cities<br>1 Standard</div>
+          <div style="margin-top:24px; font-size:11px; letter-spacing:.15em; text-transform:uppercase; color:var(--gold-dim)">Nigeria-wide coverage</div>
+          <div style="margin-top:40px; width:120px; height:1px; background:rgba(184,150,62,.2); margin-left:auto; margin-right:auto;"></div>
+          <div style="margin-top:24px; font-size:13px; color:var(--mist); line-height:1.8;">Inter-city road transfers<br>available on request</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ FAQ ════ -->
+<section class="sec faq-sec" id="faq">
+  <div class="faq-inner">
+    <div class="reveal">
+      <div class="tag-line">FAQ</div>
+      <h2 class="display">Questions<br><em>answered</em></h2>
+      <p class="intro-body" style="margin-top:20px">Can't find what you're looking for? WhatsApp us directly — we respond within the hour.</p>
+      <a href="#contact" class="btn-gold" style="margin-top:32px; display:inline-block">Contact Us</a>
+    </div>
+    <div class="faq-list reveal reveal-delay-1" id="faqList">
+      <div class="faq-item">
+        <button class="faq-q">How far in advance should I book? <span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">For single transfers, 24 hours notice is usually sufficient. For events requiring multiple vehicles, we recommend at least 5–7 business days. For large convoys (10+ vehicles) or multi-city events, 2 weeks is ideal to ensure driver and vehicle availability.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Is pricing fixed or do rates change? <span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">All RWM quotes are fixed and all-inclusive. The figure in your quote is the figure on your invoice. We do not apply surge pricing, after-hours premiums, or hidden fees. Any out-of-scope additions (e.g. extra hours beyond agreed time) are agreed in advance and shown separately.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Do you work with event planners and agencies? <span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">Yes — the majority of our bookings come through event management agencies, PR firms, and brand activation houses. We provide full production-friendly documentation, itemised invoices for client billing, and a dedicated operations contact who can be added to your event WhatsApp group.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">What if a flight is delayed? <span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">We monitor all incoming flights in real time. If your flight is delayed, your driver adjusts automatically — you will never land to find your car has left. We include up to 60 minutes of complimentary waiting time on all airport pickups.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Can I request an armoured vehicle? <span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">Yes. Armoured vehicle options are available for select VIP and executive bookings. These must be requested at the time of initial enquiry. We will confirm availability and pricing within 2 hours as with all bookings.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Do you handle inter-city road transfers? <span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">Yes. We regularly handle Lagos–Ibadan, Lagos–Sagamu, and Abuja–Kaduna road transfers for executives and corporate clients. Longer routes (e.g. Lagos–Port Harcourt) are available on request and require 72 hours notice minimum.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Do you offer monthly retainer packages? <span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">Yes. Corporate clients who require consistent chauffeur services can engage RWM on a monthly retainer. Retainer packages include a dedicated driver, priority booking, monthly consolidated invoicing, and a 10% fee reduction versus ad-hoc rates.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ CTA / CONTACT ════ -->
+<section class="cta-final" id="contact">
+  <div>
+    <div class="tag-line" style="color:rgba(13,13,11,.5);">
+      <span style="display:block;width:28px;height:1px;background:rgba(13,13,11,.3)"></span>
+      Get In Touch
+    </div>
+    <h2 class="cta-final-title">
+      Ready to move your<br>guests <em>in style?</em>
+    </h2>
+    <p style="margin-top:20px; font-size:14px; color:rgba(13,13,11,.55); line-height:1.8; max-width:400px;">Tell us what you need. We'll come back with a full quote in under 2 hours — no obligation, no hard sell.</p>
+  </div>
+  <div class="cta-final-right">
+    <a href="https://wa.me/2348000000000" class="btn-dark" style="font-size:13px; padding:18px 40px;">📲 &nbsp;WhatsApp Us Now</a>
+    <div class="cta-divider"></div>
+    <div class="cta-final-contact">
+      <div class="contact-row">
+        <div class="contact-icon">📞</div>
+        <div>
+          <div class="contact-label">Call or SMS</div>
+          <div class="contact-value">+234 800 000 0000</div>
+        </div>
+      </div>
+      <div class="contact-row">
+        <div class="contact-icon">✉</div>
+        <div>
+          <div class="contact-label">Email</div>
+          <div class="contact-value">info@ridewithme.com.ng</div>
+        </div>
+      </div>
+      <div class="contact-row">
+        <div class="contact-icon">📍</div>
+        <div>
+          <div class="contact-label">Based In</div>
+          <div class="contact-value">Lagos, Nigeria</div>
+        </div>
+      </div>
+    </div>
+    <div style="font-size:11px; color:rgba(13,13,11,.4); letter-spacing:.08em; margin-top:4px;">Available 24 hours · 7 days a week</div>
+  </div>
+</section>
+
+<!-- ════ FOOTER ════ -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand-name">Ride With Me</div>
+      <div class="footer-brand-tag">Lagos' Elite Chauffeur Service</div>
+      <p class="footer-desc">Premium VIP chauffeur and event ground logistics for Nigeria's most discerning clients. Trusted by top brands, artists, and executives since 2019.</p>
+      <div class="footer-socials">
+        <a href="#" class="social-btn">IG</a>
+        <a href="#" class="social-btn">TW</a>
+        <a href="#" class="social-btn">LI</a>
+        <a href="#" class="social-btn">TK</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#services">Airport Transfers</a></li>
+        <li><a href="#services">Event Logistics</a></li>
+        <li><a href="#services">Corporate Chauffeur</a></li>
+        <li><a href="#services">VIP Movement</a></li>
+        <li><a href="#services">Wedding Transport</a></li>
+        <li><a href="#services">Convoy Management</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About RWM</a></li>
+        <li><a href="#fleet">Our Fleet</a></li>
+        <li><a href="#clients">Notable Events</a></li>
+        <li><a href="#testimonials">Client Stories</a></li>
+        <li><a href="#coverage">Coverage Map</a></li>
+        <li><a href="#">Careers</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <div class="footer-contact-line"><strong>+234 800 000 0000</strong></div>
+      <div class="footer-contact-line"><strong>info@ridewithme.com.ng</strong></div>
+      <div class="footer-contact-line" style="margin-top:12px">Lagos Island,<br>Lagos, Nigeria</div>
+      <div class="footer-contact-line" style="margin-top:14px; font-size:11px; letter-spacing:.1em; color:var(--gold-dim);">AVAILABLE 24 / 7</div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 Ride With Me Nigeria Ltd. All rights reserved.</div>
+    <div class="footer-legal">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Cookie Policy</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Custom cursor (desktop only)
+if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+  const cur = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  document.addEventListener('mousemove', e => {
+    cur.style.left = e.clientX + 'px';
+    cur.style.top  = e.clientY + 'px';
+    setTimeout(() => {
+      ring.style.left = e.clientX + 'px';
+      ring.style.top  = e.clientY + 'px';
+    }, 80);
+  });
+}
+
+// Sticky nav
+const nav = document.getElementById('mainNav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
+
+// Mobile menu
+const menuBtn = document.getElementById('menuBtn');
+const navDrawer = document.getElementById('navDrawer');
+const drawerOverlay = document.getElementById('drawerOverlay');
+
+function openMenu() {
+  menuBtn.classList.add('open');
+  navDrawer.classList.add('open');
+  drawerOverlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeMenu() {
+  menuBtn.classList.remove('open');
+  navDrawer.classList.remove('open');
+  drawerOverlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+menuBtn.addEventListener('click', () => {
+  navDrawer.classList.contains('open') ? closeMenu() : openMenu();
+});
+drawerOverlay.addEventListener('click', closeMenu);
+document.querySelectorAll('.drawer-link').forEach(link => {
+  link.addEventListener('click', closeMenu);
+});
+
+// Scroll reveal
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('shown');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.06 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Services tabs
+document.querySelectorAll('.svc-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.svc-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.svc-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.panel).classList.add('active');
+    // On mobile, scroll to panel
+    if (window.innerWidth <= 768) {
+      document.getElementById('servicesPanels').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+// FAQ accordion
+document.querySelectorAll('.faq-q').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.closest('.faq-item');
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+  });
+});
+</script>
+</body>
+</html>
